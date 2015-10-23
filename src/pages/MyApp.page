@@ -1,0 +1,9 @@
+<apex:page controller="ClockController">
+    <apex:form >
+      <h1>Digital Clock</h1>
+      
+      <br />
+      <apex:actionPoller action="{!currentTime}" interval="30" reRender="displayTime"/>  
+      <apex:outputLabel value="{!stringTime}" id="displayTime"></apex:outputLabel>  
+    </apex:form>  
+</apex:page>

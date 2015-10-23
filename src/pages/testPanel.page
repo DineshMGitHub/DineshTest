@@ -1,0 +1,48 @@
+<apex:page controller="testPanel">
+  This is a sample visualforce page ...
+  <apex:form id="myform">
+      Input:
+         <apex:inputText value="{!inputVar}"/>
+           <apex:commandLink action="{!refreshPanels}"
+              reRender="panel1,panel2"
+              value="Refresh Result"/>
+      Result:
+          <apex:outputPanel id="panel1"
+              rendered="{!showPanel1}"><apex:outputLabel >{!showPanel1}</apex:outputLabel>
+                  Panel 1
+          </apex:outputPanel>
+          <apex:outputPanel id="panel2"
+              rendered="{!NOT(showPanel1)}"><apex:outputLabel >{!showPanel1}</apex:outputLabel>
+                  Panel 2
+          </apex:outputPanel>
+          
+          
+    <apex:pageBlock id="Assignment" >
+        <apex:pageBlockSection title="Assignment 1" >
+        <apex:pageBlockSectionItem >
+        <apex:outputPanel >
+            <apex:selectList label="Picklist" multiselect="false" size="1" value="{!SelectedOption}">
+                <apex:selectOption itemValue="hello1"></apex:selectOption>
+                <apex:selectOption itemValue="hello2"></apex:selectOption>
+                <apex:selectOption itemValue="hello3"></apex:selectOption>
+                
+            </apex:selectList>
+            <apex:actionSupport event="onchange" action="{!evaluateRenderLogic}" reRender="Assignment"/>
+            </apex:outputPanel>
+            <apex:actionStatus id="status" startText="Processing..." stoptext="Done"></apex:actionStatus>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                X <apex:inputtext id="TextX" rendered="{!renderX}" />
+            </apex:pageBlockSectionItem>
+             <apex:pageBlockSectionItem >
+                Y <apex:inputtext id="TextY" rendered="{!renderY}"/>
+            </apex:pageBlockSectionItem>
+             <apex:pageBlockSectionItem >
+                z <apex:inputtext id="TextZ" rendered="{!renderZ}" />
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        
+    </apex:pageBlock>
+    </apex:form>
+    
+  </apex:page>

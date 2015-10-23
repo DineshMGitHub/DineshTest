@@ -1,0 +1,26 @@
+<apex:page standardController="Job_Application__c">
+<script>
+    function changeFont(input, thePanel,ChangeLabel){
+        if(input.checked){            
+            document.getElementById(thePanel).style.fontWeight="bold";
+            document.getElementById(ChangeLabel).style.fontWeight='normal';
+
+        }else{
+            document.getElementById(thePanel).style.fontWeight='normal';
+            document.getElementById(ChangeLabel).style.fontWeight="bold";
+
+
+        }
+    }
+</script>
+  <apex:outputPanel layout="block">
+  <label for="CheckBox">*Select Below Option</label>
+  <input type="checkbox" id="checkbox" onClick="changeFont(this, 'j_id0:thePanel','ChangeLabel');"/>
+  </apex:outputPanel>
+  
+   <apex:outputPanel id="thePanel" layout="block">
+      Foods
+   </apex:outputPanel>
+  <label id="ChangeLabel">Clothes</label>
+  
+  </apex:page>

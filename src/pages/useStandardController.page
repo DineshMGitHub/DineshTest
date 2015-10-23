@@ -1,0 +1,15 @@
+<apex:page Controller="Media" >
+  <apex:form >
+  <apex:pageBlock >
+  <apex:pageBlockSection >
+  <apex:inputtext value="{!currentMedia.Name}"/>
+  <apex:inputtext value="{!currentMedia.Loss_Fine_Per_Day__c}"/>
+  
+  <apex:outputText value="{!value}"></apex:outputText>
+  </apex:pageBlockSection>
+  <apex:pageBlockButtons >
+  <apex:commandButton action="{!redirect}" value="Redirect"/>
+  </apex:pageBlockButtons>
+  </apex:pageBlock>
+  </apex:form>
+</apex:page>

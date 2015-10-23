@@ -1,0 +1,181 @@
+<apex:page controller="ManageQuestions">
+
+    
+    <apex:stylesheet value="{!URLFOR($Resource.ExtDoc, 'ext-all.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.DemoGrid, 'resources/css/array-grid.css')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.ExtDoc, 'ext-base.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.ExtDoc, 'ext-all-debug.js')}"/>
+    
+    <!--
+         <apex:repeat value="{!questions}" var="question">
+            ['{!question.Question__c}','{!question.Type__c}', {!question.Schedule_Question__c},  '{!question.Active__c}','{!question.ID}'],
+            </apex:repeat>
+            ['hi','hi','9/1 12:00am' ,  'yes',  '12345']
+    -->
+    <script>
+        Ext.define('Ext4Example.model.Stock', {
+        extend: 'Ext.data.Model',
+        fields: [
+            {name: 'Questions'},
+            {name: 'Type',      type: 'string'},
+            {name: 'Schedule Date',type: 'date',dateFormat: 'm-d-Y'},
+            {name: 'ACTIVE',  type: 'string'},
+            {name: 'ID', type: 'string'}
+        ]
+    });
+
+    
+    
+        Ext.define('Ext4Example.store.Stocks', {
+        extend: 'Ext.data.ArrayStore',
+        model: 'Ext4Example.model.Stock',
+        data: [
+            <apex:repeat value="{!questions}" var="question">
+            ['{!question.Question__c}','{!question.Type__c}', '{!question.Schedule_Question__c}',  '{!question.Active__c}','{!question.ID}'],
+            </apex:repeat>
+             
+        ]   
+    });
+    
+    Ext.define('Ext4Example.view.stock.StockGrid' ,{
+    extend: 'Ext.grid.Panel',
+    alias : 'widget.stockgrid',
+    
+    title : 'Json Grid',
+    
+    /**
+     * Custom function used for column renderer
+     * @param {Object} val
+     */
+    change: function(val) {
+        if (val > 0) {
+            return '<span style="color:green;">' + val + '</span>';
+        } else if (val < 0) {
+            return '<span style="color:red;">' + val + '</span>';
+        }
+        return val;
+    },
+    
+    /**
+     * Custom function used for column renderer
+     * @param {Object} val
+     */
+    pctChange: function(val) {
+        if (val > 0) {
+            return '<span style="color:green;">' + val + '%</span>';
+        } else if (val < 0) {
+            return '<span style="color:red;">' + val + '%</span>';
+        }
+        return val;
+    },
+    
+    viewConfig: {
+        stripeRows: true
+    },
+    
+    initComponent: function() {
+        
+        this.store = 'Stocks';
+        
+        this.columns = [{
+            text     : 'Question',
+            flex     : 1,
+            sortable : true,
+            dataIndex: 'Questions'
+        },
+        {
+            text     : 'Type',
+            width    : 75,
+            sortable : true,
+            dataIndex: 'Type'
+        },
+        {
+           text     : 'Schedule Date',
+            width    : 75,
+            sortable : true,
+            dataIndex: 'Schedule Date'
+        },
+        {
+            text     : 'ACTIVE',
+            width    : 75,
+            sortable : true,
+            dataIndex: 'ACTIVE'
+        },
+        {
+            text     : 'ID',
+            width    : 75,
+            sortable : true,
+            dataIndex: 'ID'
+        },
+        {
+            xtype: 'actioncolumn',
+            width: 50,
+            items: [{
+                iconCls: 'icon-delete',
+                tooltip: 'Sell stock',
+            }, {
+                getClass: function(v, meta, rec) {          
+                    if (rec.get('change') < 0) {
+                        this.items[1].tooltip = 'Hold stock';
+                        return 'icon-alert';
+                    } else {
+                        this.items[1].tooltip = 'Buy stock';
+                        return 'icon-buy';
+                    }
+                }
+            }]
+        }];
+        
+        this.callParent(arguments);
+    }
+});    
+
+/**
+ * The main application viewport, which displays the whole application
+ * @extends Ext.Viewport
+ */
+var myViewport = Ext.define('Ext4Example.view.Viewport', {
+    extend: 'Ext.Viewport',
+    
+    layout: 'vbox',
+    
+    requires: [
+        'Ext4Example.view.stock.StockGrid'
+    ],
+    
+    initComponent: function() {
+        var me = this;
+        
+        Ext.apply(me, {
+            items: [
+                {
+                    xtype: 'stockgrid'
+                },Ext.create('Ext.button.Button',{
+                    text:'Fill',
+                    action:'load'
+                })
+
+            ]
+        });
+                
+        me.callParent(arguments);
+    }
+});
+
+
+
+    </script>
+    
+    <!--<apex:includeScript value="{!URLFOR($Resource.DemoGrid, 'app/model/Stock.js')}"/>-->
+    <!--<apex:includeScript value="{!URLFOR($Resource.DemoGrid, 'app/store/Stocks.js')}"/>-->
+    <!--<apex:includeScript value="{!URLFOR($Resource.DemoGrid, 'app/view/stock/StockGrid.js')}"/>-->
+    
+   
+    
+     <script src="{!URLFOR($Resource.DemoGrid, 'app/view/Viewport.js')}"></script>
+      
+           
+    
+     <apex:includeScript value="{!URLFOR($Resource.DemoGrid, 'app/controller/Stocks.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.DemoGrid, 'app.js')}"/>
+</apex:page>

@@ -1,0 +1,7 @@
+<apex:page controller="demoParam">
+    <apex:form >
+        <apex:commandLink action="{!acceptParam}" value="Click Me">
+            <apex:param name="parameter" assignTo="{!param}" value="{!$User.FirstName}"/>
+        </apex:commandLink>
+    </apex:form> 
+</apex:page>

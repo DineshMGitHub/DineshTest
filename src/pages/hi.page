@@ -1,0 +1,37 @@
+<apex:page controller="UseChatterAPI">
+<h1>Chatter Rest API Implementation</h1>
+  <apex:outputLabel value="{!pollCount}" ></apex:outputLabel><br />
+  <br />
+  <apex:outputLabel value="{!xmlResult}" ></apex:outputLabel>
+  <br />
+  <br />
+  
+  <apex:pageBlock title="Summary">
+      <apex:outputLabel value="Total Vote Count :{!totalVoteCount}"></apex:outputLabel><br />
+      <apex:outputLabel value="My Choice Id :{!myChoiceId}"></apex:outputLabel><br />
+      <apex:outputLabel value="type :{!type}"></apex:outputLabel>      
+  </apex:pageBlock>
+ 
+  <br />
+
+  <apex:pageBlock title="Poll Detail" >
+      <apex:dataTable id="pollDetail" value="{!pollChoiceList}" var="choice" cellspacing="2px" cellpadding="5px" width="100%">
+          <apex:column value="{!choice.ID}"  headerValue="Choice ID"/>
+          <apex:column value="{!choice.Text}" headerValue="Text" />
+          <apex:column value="{!choice.Position}" headerValue="Position"/>
+          <apex:column value="{!choice.VoteCount}" headerValue="VoteCount" />
+          <apex:column value="{!choice.VoteCountRatio}" headerValue="VoteCountRatio"/>
+      </apex:dataTable>
+  </apex:pageBlock>  
+
+  <br />
+  
+  <apex:form >
+  <apex:actionStatus startText="Loading" stopText="Done" id="Status"></apex:actionStatus>
+  <br />
+      <apex:actionPoller interval="5" reRender="sessionLable, PageSession" status="Status"/>
+      <apex:outputLabel id="sessionLable">{!SessionID}</apex:outputLabel><br />
+      <apex:outputLabel id="PageSession">{!GETSESSIONID()}</apex:outputLabel>
+  </apex:form>
+  
+</apex:page>

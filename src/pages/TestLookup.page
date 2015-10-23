@@ -1,0 +1,14 @@
+<apex:page controller="searchUser">
+    <apex:form >
+        <apex:outputLabel >User Name</apex:outputLabel>
+        <apex:inputText value="{!userName}" onkeydown="searchUser();" /><br />
+        <apex:outputLabel >Search Result</apex:outputLabel>
+        <apex:selectList id="searchResult" multiselect="false" size="1">
+            <apex:selectOptions value="{!userResult}"/>
+        </apex:selectList>
+        
+        <apex:actionStatus startText="Loading.." stopText="Done" id="counterStatus" />
+        <apex:actionFunction action="{!getSearchUser}" name="searchUser" reRender="searchResult" status="counterStatus"/>
+        
+    </apex:form>
+</apex:page>

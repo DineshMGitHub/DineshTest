@@ -1,0 +1,34 @@
+<apex:page standardController="Account" extensions="accountExtension">
+    <apex:form >
+        <apex:pageBlock >
+            <apex:outputText value="{!message}"></apex:outputText>
+            <apex:pageBlockTable value="{!accountMap}" var="am">
+                <apex:column value="{!am}" headerValue="ID"/>
+                <apex:column value="{!accountMap[am].Name}" headerValue="Name"/>            
+            </apex:pageBlockTable>
+            
+            <!--ActionFunction-->
+            <a onmouseover="sayHello();" href="#">Try Me</a>
+            <apex:actionFunction action="{!setUserName}" status="myStatus" reRender="out" name="sayHello" />
+            <apex:outputPanel id="out">
+                <apex:outputText value="Hello "/>
+                <apex:actionStatus startText="requesting..." id="myStatus">
+                    <apex:facet name="stop">{!username}</apex:facet>
+                </apex:actionStatus>
+            </apex:outputPanel>
+            
+            
+            <!--Action Poller-->
+            <apex:outputText id="incCount" value="{!count}">{!count}</apex:outputText>
+            <apex:actionPoller reRender="incCount" action="{!IncreamentCount}" status="myStatus" interval="15"/>
+            
+            <!--Action support-->
+            <hr />
+            <apex:outputpanel id="counter">
+                <apex:outputLabel value="Click Me!: {!count}" style="cursor:pointer;">
+                    <apex:actionSupport event="onclick" action="{!IncreamentCount}" reRender="counter" status="myStatus"/>                
+                  </apex:outputLabel>                
+            </apex:outputpanel>
+            </apex:pageBlock>
+    </apex:form>
+</apex:page>

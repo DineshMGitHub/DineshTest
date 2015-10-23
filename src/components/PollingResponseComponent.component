@@ -1,0 +1,24 @@
+<apex:component controller="PollResponse" allowDML="True">
+    <apex:attribute type="Question__c" name="questionObject" required="true" description="Hold the Question Object" assignTo="{!question}"/>
+        <apex:pageBlock >
+            <apex:pageMessages id="errorMessage"/>
+            <apex:pageBlockSection rendered="{!question.Type__c=='Single Select'}" title="{!question.Question__c}" columns="1" collapsible="false">             
+                    <apex:selectRadio id="type"   layout="pageDirection" value="{!radioValue}">                        
+                         <apex:selectOptions value="{!options}" /> 
+                    </apex:selectRadio>                                        
+                </apex:pageBlockSection>
+                <apex:pageBlockSection rendered="{!question.Type__c=='Multi Select'}" columns="1" title="{!question.Question__c}">                                                   
+                (Choose {!correctAnswerCount} Correct Answer)   
+                    <apex:selectCheckboxes id="type" layout="pageDirection" value="{!checkBoxesValue}">                        
+                          <apex:selectOptions value="{!options}" /> 
+                    </apex:selectCheckboxes>                                                                                 
+            </apex:pageBlockSection>
+            <apex:actionFunction name="submitResponse"  action="{!submit}"/>
+            <apex:pageBlockButtons >
+                <apex:commandbutton value="Submit" action="{!submit}" rendered="{!isSubmitButtonActive}" id="submitButton"/>
+            </apex:pageBlockButtons>                   
+        </apex:pageBlock>
+
+    <apex:stylesheet value="{!URLFOR($Resource.ExtDoc, 'ext-all-gray.css')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.ExtDoc, 'ext-all.js')}"/>
+</apex:component>

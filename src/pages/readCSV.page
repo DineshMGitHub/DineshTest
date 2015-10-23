@@ -1,0 +1,16 @@
+<apex:page controller="ReadCSV" >
+  <apex:form >
+  <apex:inputFile value="{!contentFile}" filename="{!nameFile}" />
+  <apex:commandButton action="{!ReadFile}" value="Read File" id="theButton"/>
+  <apex:outputLabel >{!nameFile}</apex:outputLabel><br />
+  <apex:outputLabel >{!records}</apex:outputLabel><br />
+  
+  <apex:dataTable value="{!sampleCheck}" var="currentAccount" border="3px">
+  <apex:column value="{!currentAccount}" headerValue="Values"/>
+  </apex:dataTable>
+  
+  <apex:dataTable value="{!sampleCheck1 }" var="currentAccount" border="3px">
+  <apex:column value="{!currentAccount}" headerValue="New account"/>
+  </apex:dataTable>
+ </apex:form>
+</apex:page>

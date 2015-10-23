@@ -1,0 +1,7 @@
+<apex:page controller="LimitController" >
+    <apex:dataTable value="{!limitObjectList}" var="limit" style="width:100%;" border="0px">
+        <apex:column value="{!limit.Name}" headerValue="Name"/>
+        <apex:column value="{!limit.Consumed}" headerValue="Consumed Limit"/>
+        <apex:column value="{!limit.Total}" headerValue="Total Limit"/>
+    </apex:dataTable>
+</apex:page>

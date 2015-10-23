@@ -1,0 +1,20 @@
+<apex:page controller="testTransient" >
+  This is a sample visualforce page ...
+  Date1: {!t1} <br/>
+  Date2: {!t2} <br/>
+  <apex:form >
+    Result:
+        <apex:outputPanel rendered="{!IF(t1>t2,true,false)}">
+            Greater
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(t1==t2,true,false)}">
+           Equal
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!IF(t2>t1,true,false)}">
+           Lesser
+        </apex:outputPanel>
+
+     <apex:commandLink value="Refresh"/>
+     <apex:commandButton action="{!go}" value="Click GO"/>
+   </apex:form>
+</apex:page>

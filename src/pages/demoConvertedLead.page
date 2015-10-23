@@ -1,0 +1,22 @@
+<apex:page extensions="leadControler" standardController="Task" tabStyle="Lead">
+    <apex:form >
+        <apex:pageBlock title="Lead">
+            <apex:pageBlockSection title="Lead Information">
+                <apex:pageBlockSectionItem >
+                    <apex:inputField value="{!LeadInfo.LastName}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:inputField value="{!LeadInfo.Status}"/>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="Task Information">
+                <apex:pageBlockSectionItem >
+                    <apex:inputField value="{!Task.Status}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:inputField value="{!Task.Priority}"/>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

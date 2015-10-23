@@ -1,0 +1,172 @@
+<apex:page showHeader="false" sidebar="false" controller="PPMReminder" action="{!updatePPMEntry}" applyBodyTag="false" applyHtmlTag="false" standardStylesheets="false">
+<html class="no-js"
+      xmlns:sa="http://www.morganstanley.com/sambuca"
+      id="ng-app"
+      ng-app="ngCmpExplorer" >
+
+<head>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+    <title>PPM Report For This Week</title>
+    <meta name="description" content="matrix-ng-styles.html" />
+    <meta name="author" content="" />
+    <apex:includeScript value="{!URLFOR($Resource.Angular, 'Script1.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.Angular, 'core.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.Angular, 'Script2.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.Angular, 'jquery-1.9.1.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.Angular, 'angular.js')}" />   
+    <!--<script type="text/javascript" src="{!URLFOR($Resource.Angular, 'standard-sb0ac1bec3b.png')}"></script>-->
+    
+    <apex:includeScript value="{!URLFOR($Resource.Angular, 'lodash.sambuca.js')}" /> 
+    <apex:includeScript value="{!URLFOR($Resource.Angular, 'sambuca.js')}" /> 
+    <apex:includeScript value="{!URLFOR($Resource.Angular, 'matrix-ng.js')}" /> 
+    
+    <apex:stylesheet value="{!URLFOR($Resource.Angular, 'sambuca.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.Angular, 'bootstrap.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.Angular, 'matrix-ng.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.Angular, 'app.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.Angular, 'global.css')}"/>
+    
+    <style>
+        .component-field-set {
+            margin-top:30px;
+        }
+        .component-label {
+            vertical-align: top;
+        }
+        .tooltip {
+            display:none;
+        }
+        .checkbox-grp-aside {
+            min-width: 120px;
+        }
+        .select2-choices {
+            width:600px !important;
+        }
+        .slick-headerrow-columns {
+          height: 0px !important;
+        }
+
+    </style>
+</head>
+
+
+<body class="ng-cloak" >
+<div class="app-view" style="margin:20px">
+<div class="app-header-container">
+    <div class="app-header">
+        <div class="ms-header">
+            <div class="ms-title">PPM Report For This Week</div> 
+            <!--<div class="ms-title"> -(<apex:outputText value="{!url}"></apex:outputText>) </div>-->
+        </div>
+    </div>
+</div>
+<div class="app-body">
+
+<div class="component-field-set" ng-controller="GridCtrl" >
+    <div class="component" style="width:1200px;height:400px">
+        <div id="myGrid" mxc-slick-grid=" " mxc-manage-columns=" " mxc-header-menu=" " mxc-header-filters=" "
+             class="mxc-slick-grid"
+             column-defs="grid.colDefs"
+             grid-data="grid.dataView"
+             grid-options="grid.gridOptions"
+             api="grid.api"
+             creation-complete="gridReady()"
+             selection-model="grid.selectionModel"
+             sort-fn="mySort"
+             manage-columns-template="../mxc-slickgrid/data/example_manage_columns.tpl.html"
+             manage-columns-apply-fn="manageColumnsApplyFilterFn"
+                >
+
+        </div>
+        <div style="margin-top:5px">
+            <button type="button" class="btn btn-primary" ng-click="toggleGrouping()" style="margin-left:10px">{{ groupByCompany ? 'Hide grouping' : 'Group by Status'}}</button>
+            <!--<button type="button" class="btn btn-primary" ng-click="toggleFilterRow()" style="margin-left:10px">{{ showFilters ? 'Hide filters' : 'Show filters'}}</button>-->
+        </div>
+
+    </div>
+</div>
+</div>
+</div>
+
+
+<script type="text/javascript">
+
+angular.module( 'ngCmpExplorer', [
+    'sa.ui.Modal',
+    'mxc.ui.SlickGrid',
+    'mxc.ui.SlickGrid.HeaderMenu'
+])
+
+        .controller( 'GridCtrl' , [ '$scope', '$http', function(scope, $http){
+            scope.grid = {};
+            scope.grid.selectionModel = new Slick.RowSelectionModel({selectActiveRow: true});
+            scope.grid.gridOptions = {
+                editable: true,
+                showHeaderRow: true     // required to show column filters on first row
+            };
+
+            /**
+             *  perform actions on grid when slickgrid instance is ready.
+             *  this function is passed to "creation-complete" attribute
+             */
+            scope.gridReady = function() {
+
+                dataSample = {!ppmData};
+
+                        // load sample data
+                //$http.get( "../mxc-slickgrid/src/examples/data/example_data.json" )
+                /*$http.get( "../app/data/example_data.json" )
+                        .success( function(data) {
+                            scope.grid.dataView.setItems( data );
+                        });*/
+
+                scope.grid.dataView.setItems( dataSample );
+
+                setupContextMenu();
+            };
+
+            scope.mySort = function( row1, row2, field, ascending ) {
+                if( row1[field] == row2[field] ) return 0;
+                if( ascending > 0 )
+                    return (row1[field] > row2[field]) ? 1 : -1;
+                return (row1[field] > row2[field]) ? -1 : 1;
+            };
+
+            scope.groupByCompany = false;
+            scope.toggleGrouping = function() {
+                scope.groupByCompany = !scope.groupByCompany;
+                if( scope.groupByCompany ) {
+                    scope.grid.dataView.setGrouping( { getter:'status'} );
+                }
+                else {
+                    scope.grid.dataView.setGrouping( []);
+                }
+            }
+
+            scope.showFilters = true;
+            //scope.grid.api.getGrid().setHeaderRowVisibility( scope.showFilters );
+            
+            scope.toggleFilterRow = function() {
+                scope.showFilters = !scope.showFilters;
+                scope.grid.api.getGrid().setHeaderRowVisibility( scope.showFilters );
+            };
+
+            var n = 0;
+            scope.grid.colDefs = [
+                { resizable:true, field:'name', name:'Associate Name', width:300, id:'name'+n, sortable:true, formatter:scope.groupingColumnFormatter },
+                { resizable:true, field:'ppm', name:'PPM', id:'ppm'+n, width:300, sortable:true},
+                { resizable:true, field:'status', name:'Status', id:'status'+n,  width:300, sortable:true },
+                { resizable:true, field:'actionTime', name:'Action Time', id:'actionTime'+n,width:300,  sortable:true}
+            ];
+        }]);
+        
+       
+
+</script>
+</body>
+</html>
+
+</apex:page>

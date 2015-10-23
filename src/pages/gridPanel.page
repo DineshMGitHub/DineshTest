@@ -1,0 +1,5 @@
+<apex:page >
+    <apex:stylesheet value="{!$Resource.ExtDoc}/ext-all-gray.css"/>
+        <apex:includeScript value="{!$Resource.ExtDoc}/ext-all.js"/>
+  <apex:includeScript value="{!$Resource.AppZip}/GridPanel.js"/>
+</apex:page>

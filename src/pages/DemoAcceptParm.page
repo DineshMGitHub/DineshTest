@@ -1,0 +1,4 @@
+<apex:page controller="demoParam">
+  <apex:outputLabel value="{!param}"></apex:outputLabel>
+  
+</apex:page>

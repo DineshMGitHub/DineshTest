@@ -1,0 +1,24 @@
+<apex:page >
+    <!-- Begin Default Content REMOVE THIS -->
+    <h1>Congratulations</h1>
+This is your new Page
+
+<!-- End Default Content REMOVE THIS -->
+
+    <apex:stylesheet value="{!URLFOR($Resource.ExtDoc, 'ext-all.css')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.ExtDoc, 'ext-base.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.ExtDoc, 'ext-all-debug.js')}"/>
+    
+     <!--<apex:includeScript value="{!URLFOR($Resource.DemoMVCExt, '/DemoProject/ExtApp.js')}"/>-->
+     
+     <!--<apex:includeScript value="{!$Resource.DemoMVCExt}/DemoProject/ExtApp.js"/>-->
+     
+     <script type="text/javascript" src="{!URLFOR($Resource.DemoMVCExt, '/DemoProject/app/view/MyPanel.js')}"></script>
+     <script type="text/javascript" src="{!URLFOR($Resource.DemoMVCExt, '/DemoProject/app/view/Viewport.js')}"></script>
+     <script type="text/javascript" src="{!URLFOR($Resource.DemoMVCExt, '/DemoProject/app/controller/MyController.js')}"></script>
+     <script type="text/javascript" src="{!URLFOR($Resource.DemoMVCExt, '/DemoProject/app/controller/MySecondController.js')}"></script>
+     
+     <script type="text/javascript" src="{!URLFOR($Resource.DemoMVCExt, '/DemoProject/ExtApp.js')}"></script>
+     
+    
+</apex:page>

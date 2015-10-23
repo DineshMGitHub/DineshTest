@@ -1,0 +1,108 @@
+<apex:page controller="ScheduleAllBatches" sidebar="false" tabStyle="Account">
+    <style>
+        body{
+             Font-Family:calibri; 
+        }
+        
+        h1{
+            text-align: center;
+            Font-Size: Large;
+            Color: Grey;
+        }
+        
+        .Job
+        {
+            width: 100%;
+        }
+        
+        .odd{
+            background-Color: white;
+        }
+        
+        .even{
+            background-Color: #E1EDF7;
+        }
+        
+        .header{
+            background-Color: #7FB4E3;
+            color: White;
+        }
+        
+        .red{
+            background-Color: Red;
+            color:white;
+            font-weight: bold;
+        }
+        
+        .highlight{
+            background-Color: Yellow
+        }
+        
+        .blockPage{
+            color:Black;
+            Top:0px;
+            Left:0px;
+            position:fixed;
+            width:100%;
+            height:100%;
+            background-color:white;
+            opacity:0.5;
+            filter:alpha(opacity=50);
+            font-size: 30px;
+            z-index:1;
+        }
+        
+        .scheduleRefresherImage{
+            position:absolute;
+            Top:42%;
+            Left:45%;
+            z-index:2;
+        }
+        
+        input {
+            cursor: pointer;
+        }
+    </style>
+    <apex:form >
+    <h1>Job Switch Utility</h1>
+    <br />
+    <br />
+        <input type="button" value="Schedule All Batches" onClick="ScheduleJob('All Job');"/>
+        <input type="button" value="Delete All Batches" onClick="DeleteJob();"/>
+          
+        <apex:actionStatus id="Status" startStyleClass="blockPage">
+        <apex:facet name="start">
+            <apex:image styleClass="scheduleRefresherImage" url="{!$Resource.SchedulerImages}/Loading-Image.gif" />                       
+        </apex:facet>
+        </apex:actionStatus>  
+        
+        <apex:actionFunction name="ScheduleJob" action="{!Schedule}" reRender="batchStatus,errorMessage" status="Status">  
+            <apex:param name="name2" assignTo="{!jobName }" value="" />
+        </apex:actionFunction>  
+        
+        <apex:actionFunction name="DeleteJob" action="{!DeleteAllBatches}" reRender="batchStatus, errorMessage" status="Status"> 
+        </apex:actionFunction>  
+        
+        <apex:actionFunction name="DeleteCurrentJob" action="{!DeleteCurrentJob}" reRender="batchStatus, errorMessage" status="Status">  
+            <apex:param name="name1" assignTo="{!JobID}" value="" />
+            <apex:param name="name2" assignTo="{!jobName }" value="" />
+        </apex:actionFunction>
+        
+        <apex:actionPoller action="{!reloadBatchStatusPolar}" reRender="batchStatus, errorMessage" interval="30" status="Status"/>      
+
+        <br />
+        <br />
+        <h2>Schedule Job Details</h2> <br /> <apex:outputLabel id="errorMessage" value="{!message}" styleClass="highlight"></apex:outputLabel>
+        <br />
+        <br />        
+        
+        <apex:dataTable id="batchStatus" var="job" value="{!AllScheduledBatchJobs}" styleClass="Job" rowClasses="odd,even"  headerClass="header" footerClass="header" cellpadding="5px" cellspacing="0" >
+            <apex:column headerValue="Name" value="{!job.className}"  styleClass="{!if((job.status == 'Aborted'), 'red', '') }"/>          
+            <apex:column headerValue="Status " value="{!job.status }" styleClass="{!if((job.status == 'Aborted'), 'red', '') }"/>
+            <apex:column headerValue="CronExpression " value="{!job.cronExpression }" styleClass="{!if((job.status == 'Aborted'), 'red', '') }"/> 
+            <apex:column headerValue="Turn ON/OFF Job" rendered="{!(job.status == 'Aborted')}" styleClass="red"><img src="{!$Resource.SchedulerImages}/dark-bulb.png" width="20px" height="20px" title="Turn ON" style="cursor:pointer" onclick ="{ScheduleJob('{!job.className}')}"  /></apex:column>
+            <apex:column headerValue="Turn ON/OFF Job " rendered="{!(job.status != 'Aborted')}"><img src="{!$Resource.SchedulerImages}/light-bulb.png" width="20px" height="20px" title="Turn OFF" style="cursor:pointer" onclick ="DeleteCurrentJob('{!job.cronId }','{!job.className}')" /></apex:column>           
+            <apex:facet name="footer">.</apex:facet>                       
+        </apex:dataTable> 
+    </apex:form>
+</apex:page>

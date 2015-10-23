@@ -1,0 +1,57 @@
+<apex:page standardStylesheets="false" sidebar="false" showHeader="false">
+     <apex:includeScript value="{!URLFOR($Resource.Angular, 'angular.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.Angular, 'jquery-1.9.1.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.Bootstrap, 'bootstrap.min.js')}" /> 
+
+    
+    <apex:stylesheet value="{!URLFOR($Resource.Angular, 'sambuca.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.Bootstrap, 'bootstrap.min.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.Angular, 'matrix-ng.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.Angular, 'app.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.Angular, 'global.css')}"/>
+    
+    <apex:remoteObjects >
+        <apex:remoteObjectModel name="hellooo__PPM_Setting__c" jsShorthand="ppmSetting" 
+            fields="Name,Id,hellooo__Is_Active__c">
+            <apex:remoteObjectField name="hellooo__Downtime_PPM_Error__c" jsShorthand="Error"/>
+        </apex:remoteObjectModel>
+    </apex:remoteObjects>
+    
+    <!-- JavaScript to make Remote Objects calls -->
+    <script>
+        var showError = function(){
+            // Create a new Remote Object
+            var wh = new SObjectModel.ppmSetting();
+            
+            // Use the Remote Object to query for 10 warehouse records
+            wh.retrieve({ where: { 
+                hellooo__Is_Active__c: {eq: true}
+              }, 
+              limit: 1 },  function(err, records, event){
+                if(err) {
+                    alert(err.message);
+                }
+                else {
+                    var errorDiv = document.getElementById("errorMessage");
+                    records.forEach(function(record) {
+                        errorDiv.innerHTML = record.get("Error");
+                    });                    
+                }
+            });
+        };
+    </script>
+    
+    <div class="app-header-container">
+        <div class="app-header">
+            <div class="ms-header" width="100%" style="text-align:center">
+                <div id="errorMessage" style="color: #2ba2ec;  font-size: 20px; height: 25px;margin-top: 15%;" ></div> 
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        window.onload = function() {
+            showError(); 
+        }
+    </script>
+</apex:page>

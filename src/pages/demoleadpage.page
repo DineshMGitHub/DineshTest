@@ -1,0 +1,15 @@
+<apex:page controller="demoLeadController">
+    <apex:form >
+      <apex:outputLabel >LastName</apex:outputLabel>
+      <apex:inputtext value="{!lastName}"/>
+      
+      <apex:outputLabel >company</apex:outputLabel>
+      <apex:inputtext value="{!company}"/>
+      
+      <apex:outputLabel >status</apex:outputLabel>
+      <apex:inputtext value="{!leadStatus}"/>
+      
+      <apex:commandButton action="{!saveForm}" value="save"/>
+     
+    </apex:form>
+</apex:page>

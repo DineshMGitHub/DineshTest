@@ -1,0 +1,21 @@
+<apex:page >
+  <!-- Begin Default Content REMOVE THIS -->
+  <h1>Congratulations</h1>
+  This is your new Page: EXTJS_Demo
+  <!-- End Default Content REMOVE THIS -->
+  <apex:outputText value="{!$Resource.ExtDoc}/ext-all-gray.css"></apex:outputText><br/>
+  <apex:outputText value="{!$Resource.ExtDoc}/ext-all.js"></apex:outputText><br/>
+  <apex:outputText value="{!$Resource.AppZip}/SingleFileMVC.js"></apex:outputText>
+  
+  <!--<link rel="stylesheet" type="text/css" href="{!$Resource.ExtDoc}/ext-all-gray.css" />
+
+        <script type="text/javascript" src="{!$Resource.ExtDoc}/ext-all.js"></script>
+
+        <script type="text/javascript" src="{!$Resource.AppZip}/SingleFileMVC.js"></script>-->
+        
+        
+        <apex:stylesheet value="{!$Resource.ExtDoc}/ext-all-gray.css"/>
+        <apex:includeScript value="{!$Resource.ExtDoc}/ext-all.js"/>
+        <apex:includeScript value="{!$Resource.AppZip}/SingleFileMVC.js"/>
+        
+</apex:page>

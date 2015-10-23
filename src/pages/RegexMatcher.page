@@ -1,0 +1,8 @@
+<apex:page controller="RegexMatcher">
+  <!-- Begin Default Content REMOVE THIS -->
+  <h1>Congratulations</h1>
+  This is your new Page: RegexMatcher
+  <!-- End Default Content REMOVE THIS -->
+  <apex:outputLabel value="{!isWorking}"></apex:outputLabel>
+  <apex:outputLabel value="{!matchingValue}"></apex:outputLabel>
+</apex:page>

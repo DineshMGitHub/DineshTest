@@ -1,0 +1,6 @@
+<apex:page >
+  <script>
+      window.open('http://ppm/','_blank');
+  
+  </script>
+</apex:page>

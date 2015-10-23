@@ -1,0 +1,18 @@
+<apex:page >
+    <apex:toolbar itemSeparator="|">
+    hello 
+        <apex:toolbarGroup >
+            Option 2
+            Option 3
+        </apex:toolbarGroup>
+    </apex:toolbar>
+    <apex:tabPanel title="New Tab Panel">
+        <apex:tab title="Tab1" name="Tab3">Hello1</apex:tab>
+        <apex:tab title="Tab2" name="Tab4">Hello2</apex:tab>
+
+    </apex:tabPanel>
+  <!-- Begin Default Content REMOVE THIS -->
+  <h1>Congratulations</h1>
+  This is your new Page: usingToolbar
+  <!-- End Default Content REMOVE THIS -->
+</apex:page>

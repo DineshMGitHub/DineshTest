@@ -1,0 +1,39 @@
+<apex:page controller="ListToString">
+  <!-- Begin Default Content REMOVE THIS -->
+  <h1>Congratulations</h1>
+  This is your new Page: ListToString
+  <!-- End Default Content REMOVE THIS -->
+  <apex:outputLabel >{!listInString}</apex:outputLabel>
+  
+  <br />
+  <br />
+  <apex:outputLabel >{!NumFutureCallsInLast24Hours}</apex:outputLabel>
+  
+  <html>
+<head>
+
+<script language="javascript" src="/soap/ajax/23.0/connection.js" type="text/javascript"></script>
+
+<script>
+alert("{!sessionID}");
+sforce.connection.sessionId = "{!sessionID}";
+
+var result = sforce.connection.getDeleted("Account", "2013-07-05T23:01:01+01:00", "2013-07-08T23:01:01+01:00");
+alert(result );
+document.write("result:"+result );
+
+var resultLabel = document.getElementByID("resultLabel");
+
+resultLabel.innerHTML = result;         
+
+</script>
+
+</head>
+<body>
+<lable id="resultLabel"></lable>
+
+hello
+
+</body>
+</html>
+</apex:page>

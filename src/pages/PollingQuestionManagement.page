@@ -1,0 +1,150 @@
+<apex:page controller="QuestionManagement" sidebar="false">
+
+    <apex:pageMessages id="errorMessage"></apex:pageMessages>
+    <apex:actionStatus id="status" startText="Please Wait..."></apex:actionStatus>
+    <apex:form >
+    
+        <apex:pageBlock title="New Question" id="pb">
+            
+            <apex:pageBlockSection title="Question">
+                <apex:inputTextarea cols="50" rows="5" value="{!question}" required="True" label="Question" styleClass="requiredExample"/>
+                
+                <apex:selectRadio value="{!type}" layout="pageDirection" label="Type">
+                    <apex:selectOption itemValue="Multi Select" itemLabel="Multi Select"></apex:selectOption>
+                    <apex:selectOption itemValue="Single Select" itemLabel="Single Select"></apex:selectOption>
+                </apex:selectRadio>
+                
+                <apex:inputCheckbox value="{!isActive}" title="Activate" label="Activate"/>                
+                <apex:inputText value="{!scheduleDate}" id="scheduleDate" label="Schedule Question (mm/dd/yyyy)" required="true" styleClass="requiredExample"/>                               
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection title="Insert Answer" id="insertAnswer" >   
+                         
+                    <apex:inputText label="Answer" required="true" styleClass="requiredExample" value="{!BlankString}"/>
+                    <apex:selectList size="1" label="Answer Status">
+                        <apex:selectOption itemValue="Correct" itemLabel="Correct Answer"></apex:selectOption>
+                        <apex:selectOption itemValue="Wrong" itemLabel="Wrong Answer"></apex:selectOption>
+                    </apex:selectList> 
+                        
+                    <apex:inputText label="Answer" required="true" styleClass="requiredExample" value="{!BlankString}"/>
+                    <apex:selectList size="1" label="Answer Status">
+                        <apex:selectOption itemValue="Correct" itemLabel="Correct Answer"></apex:selectOption>
+                        <apex:selectOption itemValue="Wrong" itemLabel="Wrong Answer"></apex:selectOption>
+                    </apex:selectList>               
+                    
+                    <apex:commandLink value="Add More Answers" styleClass="addMore" onClick="return false;" />
+                    
+                    
+            </apex:pageBlockSection>  
+                
+            <apex:pageBlockSection title="Manage All Questions" columns="1">
+                <apex:pageBlockTable value="{!allQuestion}" var="q">
+                    <apex:column headerValue="Question" >
+                        <apex:outputLink target="_blank" value="/{!q.ID}">{!q.Question__c}</apex:outputLink>
+                    </apex:column>
+                    <!--
+                    <apex:column headerValue="Type">
+                        <apex:outputLink >{!q.Type__c}</apex:outputLink>
+                    </apex:column>
+                    <apex:column headerValue="Active">
+                        <apex:outputLink >{!q.Active__c}</apex:outputLink>
+                    </apex:column>
+                    <apex:column headerValue="Schedule Date">
+                        <apex:outputLink >{!q.Schedule_Question__c}</apex:outputLink>
+                    </apex:column>
+                    -->
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockButtons location="Top">
+                <apex:commandButton value="Save"/>
+            </apex:pageBlockButtons>
+            
+        </apex:pageBlock>
+        <apex:actionFunction action="{!saveNewQuestion}" name="addNewQuestion" />
+        
+        <apex:inputHidden id="answerInfo" value="{!commaSeperatedAnswer}"/>
+        <apex:inputHidden id="answerStatusInfo" value="{!commaSeperatedAnswerStatus}"/>
+        
+        <apex:actionFunction action="{!saveNewAnswers}" name="saveNewAnswers" >                 
+        </apex:actionFunction>
+        
+    </apex:form>
+    
+    <apex:stylesheet value="{!URLFOR($Resource.ExtDoc, 'ext-all-gray.css')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.ExtDoc, 'ext-all.js')}"/>
+    
+    <script type="text/javascript">
+    
+      Ext.onReady(function(){
+          var answerTableBody = Ext.fly(Ext.DomQuery.selectNode('div[id*=insertAnswer]')).last('div').child('table').child('tbody');
+          Ext.select('a.addMore').on('click',function(){
+          
+              var getNewAnswer = answerTableBody.first('tr');
+              var getAddMoreAnswerTR = answerTableBody.last('tr');              
+              
+              var getAnswerTable = Ext.fly(Ext.DomQuery.selectNode('div[id*=insertAnswer]')).last('div').child('table').first('tbody');
+              getAnswerTable.insertHtml('beforeEND',getNewAnswer.dom.innerHTML);
+              
+              var getLastTR = answerTableBody.last('tr');
+              getLastTR.insertBefore(getAddMoreAnswerTR );
+              checkMinTwoOption();
+              
+                         
+          });   
+          
+          Ext.select('input.btn').on('click',function(){  
+              var answers = new Array(20);
+              var answerStatus = new Array(20);
+              var getInputTags = Ext.fly(Ext.DomQuery.selectNode('div[id*=insertAnswer]')).last('div').child('table').first('tbody').query('input');
+              var getSelectTags = Ext.fly(Ext.DomQuery.selectNode('div[id*=insertAnswer]')).last('div').child('table').first('tbody').query('select');
+              
+              for(var i=0; i< getInputTags.length; i++){
+                  //alert('Answer :'+Ext.getDom(getInputTags[i]).value+' Status :'+Ext.getDom(getSelectTags[i]).value);
+                  answers[i] = Ext.getDom(getInputTags[i]).value;
+                  answerStatus[i] = Ext.getDom(getSelectTags[i]).value;
+                                   
+              }
+              var hiddenAnswerTag = Ext.fly(Ext.DomQuery.selectNode('input[id*=answerInfo]'));
+              Ext.getDom(hiddenAnswerTag ).value= answers;
+              
+              var hiddenStatusTag = Ext.fly(Ext.DomQuery.selectNode('input[id*=answerStatusInfo]'));              
+              Ext.getDom(hiddenStatusTag ).value= answerStatus;
+              alert('Answer: '+answers+' Status: '+answerStatus);
+              addNewQuestion();
+              
+          }); 
+          
+           Ext.select('a.removeAnswer').on('click',function(){
+               alert('under Construction');
+           });
+      });
+      
+      function removerAnswer(){
+          var secondLastTr = Ext.fly(Ext.DomQuery.selectNode('div[id*=insertAnswer]')).last('div').child('table').child('tbody').last('tr').prev();
+          secondLastTr.remove();
+          checkMinTwoOption();
+      }
+      
+      function checkMinTwoOption(){
+          var answerTableBody = Ext.fly(Ext.DomQuery.selectNode('div[id*=insertAnswer]')).last('div').child('table').child('tbody');
+           var getInputTags = answerTableBody.query('input');
+           var lastTrTd = answerTableBody.last('tr').last('td');  
+              if(getInputTags.length>2){                                  
+                  lastTrTd.dom.innerHTML = "<a onclick=\"removerAnswer();\" class=\"removeAnswer\">Remove Answer</a>";                 
+              }else{                  
+                  lastTrTd.dom.innerHTML = "";
+              }
+      }
+
+    </script>
+    
+    <style type="text/css">
+        .removeAnswer{
+            cursor:pointer;
+            text-decoration:underline;
+        }
+    </style>
+   
+
+</apex:page>

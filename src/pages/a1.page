@@ -1,0 +1,19 @@
+<apex:page standardController="Account">
+  <!-- Begin Default Content REMOVE THIS -->
+  <h1>Congratulations</h1>
+  <apex:form >
+  <apex:pageBlock >
+  <apex:pageBlockSection >
+  <apex:inputField value="{!Account.Name}"/>
+  <apex:detail inlineEdit="true" relatedList="true" showChatter="true" />
+  <apex:actionRegion >
+  <apex:commandButton action="{!Delete}" value="Delete"/>
+  </apex:actionRegion>
+  </apex:pageBlockSection>
+  <apex:pageBlockButtons >
+  <apex:commandButton action="{!Save}" immediate="true" value="Save"/>
+  </apex:pageBlockButtons>
+  </apex:pageBlock>
+  </apex:form>
+  <apex:relatedList list="Opportunities"/>
+</apex:page>

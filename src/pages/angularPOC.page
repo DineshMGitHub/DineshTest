@@ -1,0 +1,87 @@
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false" title="This Week PPm Status" controller="PPMReminder" action="{!updatePPMEntry}">
+    <apex:includeScript value="{!URLFOR($Resource.Angular, 'angular.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.Angular, 'jquery-1.9.1.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.Bootstrap, 'bootstrap.min.js')}" /> 
+
+    
+    <apex:stylesheet value="{!URLFOR($Resource.Angular, 'sambuca.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.Bootstrap, 'bootstrap.min.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.Angular, 'matrix-ng.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.Angular, 'app.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.Angular, 'global.css')}"/>
+    <script>
+        window.open('http://ppm/'); 
+    </script>
+    
+    <div ng-app="angularApp"  class="app-view" style="margin:20px">
+        <div ng-controller="angularController">
+            <div class="app-header-container">
+                <div class="app-header">
+                    <div class="ms-header">
+                        <div class="ms-title">This Week PPM Status</div> 
+                    </div>
+                </div>
+            </div>
+        
+            <p style="width:100%;text-align:right;">
+                <div class="btn-primary img-rounded" style="width: 352px;float: right;margin-bottom: 25px;text-align: right;">
+                    <label class="control-label">Search</label>
+                    <input data-toggle="tooltip" data-placement="bottom" title="Search" type="text" ng-model="searchText" class="search_bar" style="margin-bottom: 23px !Important;"/>
+                    <span class="glyphicon glyphicon-search"></span>
+                </div>
+            </p>
+            
+            <table class="table">
+                <tr><th class="btn-primary">Sr. No.</th><th ng-click="changeFilter('name')" class="btn-primary">Name</th><th ng-click="changeFilter('ppm')" class="btn-primary">PPM</th><th ng-click="changeFilter('status')" class="btn-primary">Status</th><th ng-click="changeFilter('actionTime')" class="btn-primary">Action Time</th></tr>
+                <tr ng-model="search[filter]" ng-repeat = "currentValue in tableData | filter : searchText | orderBy : dynamicOrderBy : reverse">
+                    <td class="col-sm-1">{{ $index + 1 }}</td>
+                    <td class="col-sm-3">{{currentValue.name}}</td>
+                    <td class="col-sm-3">{{currentValue.ppm}}</td>
+                    <td class="col-sm-2">{{currentValue.status}}</td>
+                    <td class="col-sm-3">{{currentValue.actionTime}}</td>
+                </tr>
+            </table>
+        </div>
+        
+        <!--<div class="container-fluid" ng-controller="bootstrapController">
+            <h1>Bootstrap POC</h1>
+            <p>Table using Div</p>
+            <div class="row" ng-repeat = "currentValue in tableData">
+                <div class="col-sm-1" style="background-color:rgb(110, 110, 116);">{{ $index + 1 }}</div>
+                <div class="col-sm-3" style="background-color:rgb(147, 138, 141);">{{currentValue.name}}</div>
+                <div class="col-sm-3" style="background-color:rgb(110, 110, 116);">{{currentValue.ppm}}</div>
+                <div class="col-sm-2" style="background-color:rgb(147, 138, 141);">{{currentValue.status}}</div>
+                <div class="col-sm-3" style="background-color:rgb(110, 110, 116);">{{currentValue.actionTime}}</div>
+            </div>
+        </div>-->
+    </div>
+    
+    
+    
+    <script>
+        var app = angular.module('angularApp', []);
+        
+        app.controller('angularController', function($scope){
+            $scope.tableData = {!ppmData};
+            $scope.orderAcsDir = true;
+            
+            $scope.changeFilter = function(order){ 
+                $scope.dynamicOrderBy = order;
+                               
+                if(!$scope.orderAcsDir){
+                    $scope.reverse = true;
+                }else{
+                    $scope.reverse = false;
+                }
+                
+                $scope.orderAcsDir = !$scope.orderAcsDir;
+            }
+        });
+        
+        app.controller('bootstrapController', function($scope){
+            $scope.tableData = {!ppmData};
+        });
+        
+          
+    </script>
+</apex:page>

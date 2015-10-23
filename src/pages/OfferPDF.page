@@ -1,0 +1,13 @@
+<apex:page >
+  <apex:pageBlock >
+  <apex:outputText value="this in {0} and this is {1}" id="ot">
+  <apex:param value="hi"/>
+   <apex:param value="hello"/>
+  </apex:outputText>
+  <apex:message title="hi" for="ot" />
+  <apex:pageBlockSection columns="3" title="Hello Section">
+  
+  <apex:detail relatedList="false"/>
+  </apex:pageBlockSection>
+  </apex:pageBlock>
+</apex:page>

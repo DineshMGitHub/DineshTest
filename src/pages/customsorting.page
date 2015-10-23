@@ -1,0 +1,15 @@
+<apex:page controller="CustomSortingController">
+    <apex:dataTable value="{!personList}" var="person" width="20%">
+        <apex:column value="{!person.name}" title="Name" headerValue="Name"/>
+        <apex:column value="{!person.weight}" title="Weight" headerValue="Weight"/>
+        <apex:column value="{!person.height}" title="Weight" headerValue="Height"/>
+    </apex:dataTable>
+    
+    <br />
+    
+    <apex:dataTable value="{!sortedPersonList}" var="person" width="20%">
+        <apex:column value="{!person.name}" title="Name" headerValue="Name"/>
+        <apex:column value="{!person.weight}" title="Weight" headerValue="Weight"/>
+        <apex:column value="{!person.height}" title="Weight" headerValue="Height"/>
+    </apex:dataTable>
+</apex:page>

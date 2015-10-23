@@ -1,0 +1,3 @@
+<apex:page controller="PPMReminder" contentType="JSON">
+  <apex:outputText >{!ppmData}</apex:outputText>
+</apex:page>

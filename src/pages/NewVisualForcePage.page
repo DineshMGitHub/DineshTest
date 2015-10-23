@@ -1,0 +1,63 @@
+<apex:page standardController="Interviewer__c" extensions="InterviewerExtensionController">
+    <apex:stylesheet value="{!$Resource.MyStylesheet}"/>
+    <h1 class="Green">Stylesheet</h1><br />
+    <apex:include pageName="hi"/>
+  <apex:pageBlock title="Candidates" tabStyle="Candidate__c">
+      <apex:pageBlockSection title="Student">
+          <apex:dataList value="{!candidates}" var="currentCandidate" type="1">
+                  <apex:outputText >{!currentCandidate.NAME}</apex:outputText>
+                  <apex:outputText ><b>[{!currentCandidate.LASTMODIFIEDDATE}]</b></apex:outputText>
+                  <apex:outputLabel value="{!currentCandidate.NAME}"></apex:outputLabel>
+                  <apex:outputLink value="http://google.com" title="Google">Google</apex:outputLink>
+          </apex:dataList>
+      </apex:pageBlockSection>
+            <apex:pageBlockButtons title="Click Me" onclick="alert('HI')">Click Me</apex:pageBlockButtons>
+      {!Interviewer__c.Name}
+      <apex:dataTable value="{!candidates}" var="currentCandidate" columns="3" rows="0">
+          <apex:column value="{!currentCandidate.NAME}"/>
+          <b><apex:column value="{!currentCandidate.LASTMODIFIEDDATE}"/></b>
+      </apex:dataTable>
+  </apex:pageBlock>
+    <apex:sectionHeader title="New Header" subtitle="Trial Header" help="http://google.com"/>
+    
+
+<apex:pageBlock title="Output Text">
+    <apex:pageBlockSection title="Exersise">
+    <apex:outputText value="I am {0}">
+    <apex:param value="Dinesh"/>
+    </apex:outputText>
+    </apex:pageBlockSection>
+    <apex:pageBlockSection title="Message Tag">
+    <!--<apex:message title="Error" for="{!$Component.lblName}"/>-->
+
+         <apex:outputText id="lblName" value="Hello Error" title="Hello Error">Hello Error</apex:outputText> 
+    </apex:pageBlockSection>
+   <apex:pageBlockSection title="Input Field">
+       <apex:form >
+       <table>
+           <tr>
+           <td>
+               <apex:inputcheckbox />
+           </td>
+           <td>
+               <apex:inputTextarea /> 
+           </td>
+           <td>
+               <apex:inputSecret />
+           </td>
+           <td>
+               <apex:inputText />
+           </td>
+           <td>
+               <apex:commandButton value="Save"/>
+               <apex:commandLink value="Google" action="http://google.com"/>
+           </td>
+             </tr>
+       </table>
+       </apex:form>
+   </apex:pageBlockSection>
+   <apex:pageBlockSection title="Facet">
+       <apex:facet name="header">Name</apex:facet>Hello
+   </apex:pageBlockSection>
+   </apex:pageBlock>
+   </apex:page>
